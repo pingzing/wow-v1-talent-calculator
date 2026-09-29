@@ -1,6 +1,6 @@
 /**
  * Vanilla WoW Talent Calculator — single-file app.
- * Talent data comes from data/all.js (window.TALENT_DATA).
+ * Talent data comes from data/data.js (window.TALENT_DATA).
  */
 
 (function () {
@@ -30,7 +30,7 @@
     tooltipTalent: null,
   };
 
-  const el = {
+  const uiElements = {
     classPicker: document.getElementById("classPicker"),
     trees: document.getElementById("trees"),
     pointsSpent: document.getElementById("pointsSpent"),
@@ -209,24 +209,26 @@
    * ------------------------------------------------------------------ */
 
   function updateActiveClassButton() {
-    for (const btn of el.classPicker.querySelectorAll("button[data-class]")) {
+    for (const btn of uiElements.classPicker.querySelectorAll(
+      "button[data-class]",
+    )) {
       btn.classList.toggle("active", btn.dataset.class === state.className);
     }
   }
 
   function renderTrees() {
     const data = currentData();
-    el.trees.innerHTML = "";
+    uiElements.trees.innerHTML = "";
     if (!data) {
       const p = document.createElement("div");
       p.className = "placeholder";
       p.textContent = "Pick a class above to begin.";
-      el.trees.appendChild(p);
+      uiElements.trees.appendChild(p);
       return;
     }
 
     for (const treeName of data.trees) {
-      el.trees.appendChild(buildTreeSection(treeName));
+      uiElements.trees.appendChild(buildTreeSection(treeName));
     }
     window.requestAnimationFrame(drawAllArrows);
   }
@@ -342,7 +344,7 @@
     if (!data) {
       return;
     }
-    const cells = el.trees.querySelectorAll(".talent");
+    const cells = uiElements.trees.querySelectorAll(".talent");
     for (const cell of cells) {
       const t = getTalent(cell.dataset.name);
       if (t) {
@@ -350,14 +352,14 @@
       }
     }
     for (const treeName of data.trees) {
-      const span = el.trees.querySelector(
+      const span = uiElements.trees.querySelector(
         `[data-tree-points="${cssEscape(treeName)}"]`,
       );
       if (span) {
         span.textContent = pointsInTree(treeName);
       }
     }
-    el.pointsSpent.textContent = totalPoints();
+    uiElements.pointsSpent.textContent = totalPoints();
     updateRequiredLevel();
     drawAllArrows();
     updateTooltipIfOpen();
@@ -367,7 +369,7 @@
   // Players earn 1 talent point per level from 10 to 60. So N spent points -> level (9 + N).
   function updateRequiredLevel() {
     const n = totalPoints();
-    el.requiredLevel.textContent = n === 0 ? "—" : String(9 + n);
+    uiElements.requiredLevel.textContent = n === 0 ? "—" : String(9 + n);
   }
 
   function cssEscape(s) {
@@ -392,7 +394,7 @@
   }
 
   function drawTreeArrows(treeName) {
-    const grid = el.trees.querySelector(
+    const grid = uiElements.trees.querySelector(
       `.tree-grid[data-tree="${cssEscape(treeName)}"]`,
     );
     if (!grid) {
@@ -557,7 +559,7 @@
   function showTooltip(t, ev) {
     state.tooltipTalent = t;
     renderTooltip(t);
-    el.tooltip.hidden = false;
+    uiElements.tooltip.hidden = false;
     positionTooltip(ev);
   }
 
@@ -681,15 +683,15 @@
       }
     }
 
-    el.tooltip.innerHTML = html.join("");
+    uiElements.tooltip.innerHTML = html.join("");
   }
 
   function positionTooltip(ev) {
-    if (el.tooltip.hidden) {
+    if (uiElements.tooltip.hidden) {
       return;
     }
     const pad = 14;
-    const rect = el.tooltip.getBoundingClientRect();
+    const rect = uiElements.tooltip.getBoundingClientRect();
     let x = ev.clientX + pad;
     let y = ev.clientY + pad;
     if (x + rect.width > window.innerWidth - 4) {
@@ -698,12 +700,12 @@
     if (y + rect.height > window.innerHeight - 4) {
       y = ev.clientY - rect.height - pad;
     }
-    el.tooltip.style.left = Math.max(4, x) + "px";
-    el.tooltip.style.top = Math.max(4, y) + "px";
+    uiElements.tooltip.style.left = Math.max(4, x) + "px";
+    uiElements.tooltip.style.top = Math.max(4, y) + "px";
   }
 
   function hideTooltip() {
-    el.tooltip.hidden = true;
+    uiElements.tooltip.hidden = true;
     state.tooltipTalent = null;
   }
 
@@ -761,7 +763,7 @@
     state.placements = data ? buildPlacements(data) : null;
     updateActiveClassButton();
     renderTrees();
-    el.pointsSpent.textContent = totalPoints();
+    uiElements.pointsSpent.textContent = totalPoints();
     updateRequiredLevel();
     writeHash();
   }
@@ -827,7 +829,7 @@
    * ------------------------------------------------------------------ */
 
   function init() {
-    el.pointsCap.textContent = String(POINT_CAP);
+    uiElements.pointsCap.textContent = String(POINT_CAP);
 
     window.addEventListener("resize", () =>
       window.requestAnimationFrame(drawAllArrows),
@@ -836,7 +838,7 @@
       if (readHash()) {
         updateActiveClassButton();
         renderTrees();
-        el.pointsSpent.textContent = totalPoints();
+        uiElements.pointsSpent.textContent = totalPoints();
         updateRequiredLevel();
       }
     });
@@ -844,7 +846,7 @@
     if (readHash()) {
       updateActiveClassButton();
       renderTrees();
-      el.pointsSpent.textContent = totalPoints();
+      uiElements.pointsSpent.textContent = totalPoints();
       updateRequiredLevel();
     } else {
       updateActiveClassButton();
@@ -856,8 +858,11 @@
     const url = location.href;
     try {
       await navigator.clipboard.writeText(url);
-      el.copyLinkBtn.textContent = "Copied!";
-      setTimeout(() => (el.copyLinkBtn.textContent = "Copy Link"), 1200);
+      uiElements.copyLinkBtn.textContent = "Copied!";
+      setTimeout(
+        () => (uiElements.copyLinkBtn.textContent = "Copy Link"),
+        1200,
+      );
     } catch {
       prompt("Copy this URL:", url);
     }
