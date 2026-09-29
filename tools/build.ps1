@@ -234,7 +234,9 @@ function Render-Cell {
         if ($null -ne $p) { $prereqItems += ($p | ConvertTo-Json -Compress) }
     }
     $prereqsJson = '[' + ($prereqItems -join ',') + ']'
-    # Attribute value uses single quotes so JSON's double quotes don't need escaping.
+    # Attribute is single-quoted so double quotes pass through, but apostrophes in
+    # talent names (e.g. "Nature's Grasp") would close the attribute early.
+    $prereqsJson = Encode-Attr $prereqsJson
 
     $unverifiedBadge = if ($placement.Unverified) { '<span class="unverified-badge" title="Position not verified against modern Wowhead calc.">?</span>' } else { '' }
 
