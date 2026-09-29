@@ -4,6 +4,8 @@ It's a talent calculator for all classes in World of Warcraft as they were at re
 
 These talents predate all the class reworks that began in v1.6.0 and concluded in v1.12.0.
 
+If you want to see it running, it can be viewed at [https://www.travelneil.com/static-html/vanilla-wow-v1-talent-calc/index.html](https://www.travelneil.com/static-html/vanilla-wow-v1-talent-calc/index.html).
+
 ## Running
 
 Simply clone and open `index.html` in a browser.
