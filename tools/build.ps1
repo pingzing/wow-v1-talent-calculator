@@ -42,22 +42,22 @@ function Get-Placements {
                 $deferred += $t
             }
             else {
-                [void]$tierMap[$t.tier].Add([int]$t.column)
+                [void]$tierMap[[int]$t.tier].Add([int]$t.column)
                 $resolved += [pscustomobject]@{ Talent = $t; Row = [int]$t.tier; Col = [int]$t.column; Unverified = $false }
             }
         }
         foreach ($t in $deferred) {
             $col = $null
             foreach ($c in $CENTER_COLS) {
-                if (-not $tierMap[$t.tier].Contains($c)) { $col = $c; break }
+                if (-not $tierMap[[int]$t.tier].Contains($c)) { $col = $c; break }
             }
             if ($null -eq $col) {
                 for ($c = 0; $c -lt $COLS; $c++) {
-                    if (-not $tierMap[$t.tier].Contains($c)) { $col = $c; break }
+                    if (-not $tierMap[[int]$t.tier].Contains($c)) { $col = $c; break }
                 }
             }
             if ($null -eq $col) { $col = 1 }
-            [void]$tierMap[$t.tier].Add($col)
+            [void]$tierMap[[int]$t.tier].Add($col)
             $resolved += [pscustomobject]@{ Talent = $t; Row = [int]$t.tier; Col = $col; Unverified = $true }
         }
         $out[$treeName] = $resolved
