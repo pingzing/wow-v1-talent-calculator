@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vanilla WoW v1.0 Talent Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 class="site-title">Vanilla WoW v1.0 Talent Calculator</h1>
+      <nav class="class-picker" id="classPicker" aria-label="Class">
+        <button
+          type="button"
+          data-class="druid"
+          title="Druid"
+          onclick="TalentCalc.switchClass('druid')"
+        >
+          <img src="icons/classes/druid.jpg" alt="Druid" />
+        </button>
+        <button
+          type="button"
+          data-class="hunter"
+          title="Hunter"
+          onclick="TalentCalc.switchClass('hunter')"
+        >
+          <img src="icons/classes/hunter.jpg" alt="Hunter" />
+        </button>
+        <button
+          type="button"
+          data-class="mage"
+          title="Mage"
+          onclick="TalentCalc.switchClass('mage')"
+        >
+          <img src="icons/classes/mage.jpg" alt="Mage" />
+        </button>
+        <button
+          type="button"
+          data-class="paladin"
+          title="Paladin"
+          onclick="TalentCalc.switchClass('paladin')"
+        >
+          <img src="icons/classes/paladin.jpg" alt="Paladin" />
+        </button>
+        <button
+          type="button"
+          data-class="priest"
+          title="Priest"
+          onclick="TalentCalc.switchClass('priest')"
+        >
+          <img src="icons/classes/priest.jpg" alt="Priest" />
+        </button>
+        <button
+          type="button"
+          data-class="rogue"
+          title="Rogue"
+          onclick="TalentCalc.switchClass('rogue')"
+        >
+          <img src="icons/classes/rogue.jpg" alt="Rogue" />
+        </button>
+        <button
+          type="button"
+          data-class="shaman"
+          title="Shaman"
+          onclick="TalentCalc.switchClass('shaman')"
+        >
+          <img src="icons/classes/shaman.jpg" alt="Shaman" />
+        </button>
+        <button
+          type="button"
+          data-class="warlock"
+          title="Warlock"
+          onclick="TalentCalc.switchClass('warlock')"
+        >
+          <img src="icons/classes/warlock.jpg" alt="Warlock" />
+        </button>
+        <button
+          type="button"
+          data-class="warrior"
+          title="Warrior"
+          onclick="TalentCalc.switchClass('warrior')"
+        >
+          <img src="icons/classes/warrior.jpg" alt="Warrior" />
+        </button>
+      </nav>
+      <div class="build-summary">
+        <span class="points-total">
+          Points: <span id="pointsSpent">0</span> /
+          <span id="pointsCap">51</span>
+        </span>
+        <button
+          type="button"
+          id="resetAllBtn"
+          class="btn"
+          onclick="TalentCalc.resetAll()"
+        >
+          Reset All
+        </button>
+        <button
+          type="button"
+          id="copyLinkBtn"
+          class="btn"
+          onclick="TalentCalc.copyLink()"
+        >
+          Copy Link
+        </button>
+      </div>
+    </header>
+
+    <div class="build-header">
+      <span class="required-level"
+        >Required Level: <span id="requiredLevel">--</span></span
+      >
+    </div>
+
+    <main class="trees" id="trees" aria-live="polite"></main>
+
+    <div id="tooltip" class="tooltip" hidden></div>
+
+    <script src="data/data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
